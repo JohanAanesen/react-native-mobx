@@ -1,4 +1,4 @@
-import React, {useEffect, useContext} from 'react';
+import React, {useEffect, useContext, useState} from 'react';
 import {
   Container,
   Header,
@@ -7,14 +7,20 @@ import {
   ListItem,
   Left,
   Right,
+  Bottom,
   Text,
   Button,
+  Form,
+  Input,
+  Item,
 } from 'native-base';
 import {todoContext} from './todo-context';
 import {useObserver} from 'mobx-react-lite';
 
 export default function TodoList() {
   const todoStore = useContext(todoContext);
+
+  const [title, setTitle] = useState('');
 
   useEffect(() => {
     onLoadTodos();
@@ -41,6 +47,18 @@ export default function TodoList() {
             </ListItem>
           ))}
         </List>
+        <Item>
+          <Input
+            placeholder="Todo"
+            value={title}
+            onChangeText={text => {
+              setTitle(text);
+            }}
+          />
+        </Item>
+        <Button onPress={() => todoStore.addTodo({title})}>
+          <Text>Add Todo</Text>
+        </Button>
       </Content>
     </Container>
   ));
